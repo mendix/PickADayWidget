@@ -41,14 +41,6 @@ define([
         postCreate: function() {
             logger.debug(this.id + ".postCreate");
 
-            /* TODO
-            - dagen buiten de maand 4.
-            - aanpassen inline styling t.b.v. static / absolute positioning en width 100%  1.
-            - zoveel mogelijk inline styling naar css sheet. 2.
-            - kijken of het mogelijk is om i.p.v. maand / jaar 'select' een bootstrap dropdown menu te gebruiken. 3.
-            - mogelijkheid om modal popup ervan te maken 5.
-            */
-
             // These are set in the Modeler later
             this.calendarButton = true;
             this.calendarButtonClass = "calendar";
