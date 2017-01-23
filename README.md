@@ -1,3 +1,3 @@
-# Mendix Widget Boilerplate
+# PickADayWidget
 
-See [AppStoreWidgetBoilerplate](https://github.com/mendix/AppStoreWidgetBoilerplate/) for an example
+Documentation t.b.d.
