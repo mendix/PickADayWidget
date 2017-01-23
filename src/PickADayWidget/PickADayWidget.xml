@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="PickADayWidget.widget.PickADayWidget" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>PickADayWidget</name>
+    <description>The description of this widget.</description>
+
+    <icon />
+
+    <properties>
+        <property key="dateAttr" type="attribute" required="true">
+            <caption>Date Attribute</caption>
+            <category>Data Source</category>
+            <description>Attribute</description>
+            <attributeTypes>
+                <attributeType name="DateTime" />
+            </attributeTypes>
+        </property>
+    </properties>
+</widget>
