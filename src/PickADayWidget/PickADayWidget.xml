@@ -15,7 +15,7 @@
                 <attributeType name="DateTime" />
             </attributeTypes>
         </property>
-        <property key="dateFormat" type="string" required="true" defaultValue="MM\DD\YYYY">
+        <property key="dateFormat" type="string" required="true" defaultValue="MM/DD/YYYY">
             <caption>Date format</caption>
             <category>Data Source</category>
             <description>This is the date format that the widget uses (formatting comes from Moment.js). Note: this is different from the placeholder used in Appearance</description>
@@ -33,10 +33,15 @@
             <category>Appearance</category>
             <description>Glyphicon button class. The icon has class "glyphicon glyphicon-" and this class Name</description>
         </property>
-        <property key="placeholderText" type="string" required="false" defaultValue="MM\DD\YYYY">
+        <property key="placeholderText" type="string" required="false" defaultValue="MM/DD/YYYY">
             <caption>Placeholder</caption>
             <category>Appearance</category>
             <description>Placeholder text used in the input field</description>
+        </property>
+        <property key="showDaysOutsideMonth" type="boolean" defaultValue="true">
+            <caption>Show days outside month</caption>
+            <category>Appearance</category>
+            <description>Show the days that are within a week but outside the current month</description>
         </property>
     </properties>
 </widget>

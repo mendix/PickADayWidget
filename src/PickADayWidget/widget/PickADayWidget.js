@@ -12,10 +12,11 @@ define([
     "dojo/_base/lang",
     "dojo/_base/event",
     "dojo/on",
+    "dojo/html",
 
     "PickADayWidget/lib/pikaday",
     "PickADayWidget/lib/moment"
-], function(declare, _WidgetBase, dom, dojoDom, dojoClass, dojoStyle, dojoAttr, dojoConstruct, dojoArray, lang, dojoEvent, dojoOn, PickADay, moment) {
+], function(declare, _WidgetBase, dom, dojoDom, dojoClass, dojoStyle, dojoAttr, dojoConstruct, dojoArray, lang, dojoEvent, dojoOn, dojoHtml, PickADay, moment) {
     "use strict";
 
     var $ = dojoConstruct.create;
@@ -32,6 +33,7 @@ define([
         buttonClass: "calendar",
         dateFormat: "MM/DD/YYYY",
         placeholderText: "MM/DD/YYYY",
+        showDaysOutsideMonth: true,
 
         // Internal variables.
         _picker: null,
@@ -44,6 +46,10 @@ define([
 
         postCreate: function() {
             logger.debug(this.id + ".postCreate");
+
+            if (this.readOnly || this.get("disabled") || this.readonly) {
+                this._readOnly = true;
+            }
 
             this.setNative = false;         // TODO: After thorough testing, add this as an option to the modeler
             this.calendarMode = "inline";   // TODO: Add modal option
@@ -91,19 +97,21 @@ define([
                 class: "pickerCalendar"
             }, this.domNode);
 
-            this._picker = new PickADay({
-                field: this._inputNode,
-                trigger: this._calendarButton,
-                container: pickerWrapper,
-                onOpen: lang.hitch(this, this._onOpen),
-                onSelect : lang.hitch(this, this._onSelect),
-                onClose : lang.hitch(this, this._onClose),
-                format: this.dateFormat,
-                showDaysInNextAndPreviousMonths: true,
-                theme: "mendix-pickaday"
-            });
+            if (!this._readOnly) {
+                this._picker = new PickADay({
+                    field: this._inputNode,
+                    trigger: this._calendarButton,
+                    container: pickerWrapper,
+                    onOpen: lang.hitch(this, this._onOpen),
+                    onSelect : lang.hitch(this, this._onSelect),
+                    onClose : lang.hitch(this, this._onClose),
+                    format: this.dateFormat,
+                    showDaysInNextAndPreviousMonths: this.showDaysOutsideMonth,
+                    theme: "mendix-pickaday"
+                });
 
-            this._picker.hide();
+                this._picker.hide();
+            }
         },
 
         _onSelect: function (date) {
@@ -164,7 +172,59 @@ define([
                         this._updateRendering();
                     })
                 });
+
+                this.subscribe({
+                    guid: this._contextObj.getGuid(),
+                    val: true,
+                    callback: lang.hitch(this, function (validations) {
+                        logger.debug(this.id + " Validation subscription fired");
+                        this._handleValidation(validations, this.dateAttr);
+                    })
+                });
             }
+        },
+
+        // Handle validations.
+        _handleValidation: function (validations, attribute) {
+            logger.debug(this.id + "._handleValidation");
+            this._clearValidations();
+
+            var validation = validations[0],
+                message = validation.getReasonByAttribute(attribute);
+
+            if (this._readOnly) {
+                validation.removeAttribute(attribute);
+            } else if (message) {
+                this._addValidation(message);
+                validation.removeAttribute(attribute);
+            }
+        },
+
+        // Clear validations.
+        _clearValidations: function () {
+            logger.debug(this.id + "._clearValidations");
+            dojoConstruct.destroy(this._alertDiv);
+            this._alertDiv = null;
+        },
+
+        // Show an error message.
+        _showError: function (message) {
+            logger.debug(this.id + "._showError");
+            if (this._alertDiv !== null) {
+                dojoHtml.set(this._alertDiv, message);
+                return true;
+            }
+            this._alertDiv = dojoConstruct.create("div", {
+                "class": "alert alert-danger",
+                "innerHTML": message
+            });
+            dojoConstruct.place(this._alertDiv, this.domNode);
+        },
+
+        // Add a validation.
+        _addValidation: function (message) {
+            logger.debug(this.id + "._addValidation");
+            this._showError(message);
         },
 
         _updateRendering: function(callback) {
@@ -179,6 +239,7 @@ define([
                 dojoStyle.set(this.domNode, "display", "none");
             }
 
+            this._clearValidations();
             this._executeCallback(callback, "_updateRendering");
         },
 
