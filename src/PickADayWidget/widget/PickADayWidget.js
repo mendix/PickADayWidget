@@ -28,6 +28,10 @@ define([
 
         // Set in Modeler
         dateAttr: "",
+        showButton: true,
+        buttonClass: "calendar",
+        dateFormat: "MM/DD/YYYY",
+        placeholderText: "MM/DD/YYYY",
 
         // Internal variables.
         _picker: null,
@@ -41,13 +45,8 @@ define([
         postCreate: function() {
             logger.debug(this.id + ".postCreate");
 
-            // These are set in the Modeler later
-            this.calendarButton = true;
-            this.calendarButtonClass = "calendar";
-            this.format = "MM/DD/YYYY";
-            this.placeHolder = "MM/DD/YYYY";
-            this.setNative = false; // not sure if this works yet
-            this.calendarMode = "inline"; // should include 'modal' in the future
+            this.setNative = false;         // TODO: After thorough testing, add this as an option to the modeler
+            this.calendarMode = "inline";   // TODO: Add modal option
 
             dojoClass.add(this.domNode, "mx-dateinput pickaDay-widget", true);
 
@@ -67,14 +66,14 @@ define([
 
         _addElements: function () {
             logger.debug(this.id + "._addElements");
-            if (this.calendarButton) {
+            if (this.showButton) {
                 this._calendarButton = $("button", {
                     type: "button",
                     class: "btn mx-button mx-dateinput-select-button pickaDay-button"
                 }, this.domNode);
 
                 $("span", {
-                    class: "glyphicon glyphicon-" + this.calendarButtonClass
+                    class: "glyphicon glyphicon-" + this.buttonClass
                 }, this._calendarButton);
             }
 
@@ -85,7 +84,7 @@ define([
             this._inputNode = $("input", {
                 type: "text",
                 class: "form-control mx-dateinput-input",
-                placeHolder: this.placeHolder
+                placeHolder: this.placeholderText
             }, wrapper);
 
             var pickerWrapper = $("div", {
@@ -99,7 +98,7 @@ define([
                 onOpen: lang.hitch(this, this._onOpen),
                 onSelect : lang.hitch(this, this._onSelect),
                 onClose : lang.hitch(this, this._onClose),
-                format: this.format,
+                format: this.dateFormat,
                 showDaysInNextAndPreviousMonths: true,
                 theme: "mendix-pickaday"
             });

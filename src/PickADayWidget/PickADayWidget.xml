@@ -3,9 +3,10 @@
     <name>PickADayWidget</name>
     <description>The description of this widget.</description>
 
-    <icon />
+    <icon>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</icon>
 
     <properties>
+        <!-- DATA SOURCE -->
         <property key="dateAttr" type="attribute" required="true">
             <caption>Date Attribute</caption>
             <category>Data Source</category>
@@ -13,6 +14,29 @@
             <attributeTypes>
                 <attributeType name="DateTime" />
             </attributeTypes>
+        </property>
+        <property key="dateFormat" type="string" required="true" defaultValue="MM\DD\YYYY">
+            <caption>Date format</caption>
+            <category>Data Source</category>
+            <description>This is the date format that the widget uses (formatting comes from Moment.js). Note: this is different from the placeholder used in Appearance</description>
+        </property>
+        <!-- CALENDAR MODE -->
+        <!-- to be implemented -->
+        <!-- APPEARANCE -->
+        <property key="showButton" type="boolean" defaultValue="true">
+            <caption>Show button</caption>
+            <category>Appearance</category>
+            <description>Show a button next to the text-field</description>
+        </property>
+        <property key="buttonClass" type="string" required="true" defaultValue="calendar">
+            <caption>Button Class</caption>
+            <category>Appearance</category>
+            <description>Glyphicon button class. The icon has class "glyphicon glyphicon-" and this class Name</description>
+        </property>
+        <property key="placeholderText" type="string" required="false" defaultValue="MM\DD\YYYY">
+            <caption>Placeholder</caption>
+            <category>Appearance</category>
+            <description>Placeholder text used in the input field</description>
         </property>
     </properties>
 </widget>
