@@ -33,15 +33,38 @@
             <category>Appearance</category>
             <description>Glyphicon button class. The icon has class "glyphicon glyphicon-" and this class Name</description>
         </property>
-        <property key="placeholderText" type="string" required="false" defaultValue="MM/DD/YYYY">
+        <property key="placeholderText" type="translatableString" required="false">
             <caption>Placeholder</caption>
             <category>Appearance</category>
             <description>Placeholder text used in the input field</description>
+            <translations>
+                <translation lang="en_US">MM/DD/YYYY</translation>
+            </translations>
         </property>
         <property key="showDaysOutsideMonth" type="boolean" defaultValue="true">
             <caption>Show days outside month</caption>
             <category>Appearance</category>
             <description>Show the days that are within a week but outside the current month</description>
+        </property>
+        <property key="showLabel" type="boolean" defaultValue="false">
+            <caption>Show label</caption>
+            <category>Appearance</category>
+            <description>Show a label in front of the input field</description>
+        </property>
+        <property key="labelText" type="translatableString" required="false">
+            <caption>Label text</caption>
+            <category>Appearance</category>
+            <description>Text for the label</description>
+            <translations>
+                <translation lang="en_US">Label</translation>
+            </translations>
+        </property>
+        <!-- BEHAVIOUR -->
+        <property key="onChangeMF" type="microflow" required="false" defaultValue="">
+            <caption>On Change Microflow</caption>
+            <category>Behavior</category>
+            <description>The microflow to execute on when the value is changed.</description>
+            <returnType type="Void" />
         </property>
     </properties>
 </widget>

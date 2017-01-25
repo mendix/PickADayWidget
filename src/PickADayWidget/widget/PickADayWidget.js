@@ -34,6 +34,9 @@ define([
         dateFormat: "MM/DD/YYYY",
         placeholderText: "MM/DD/YYYY",
         showDaysOutsideMonth: true,
+        showLabel: false,
+        labelText: "",
+        onChangeMF: "",
 
         // Internal variables.
         _picker: null,
@@ -60,6 +63,7 @@ define([
 
             this.own(dojoOn(this._inputNode, "focus", lang.hitch(this, this._onFocus)));
             this.own(dojoOn(this._inputNode, "blur", lang.hitch(this, this._onBlur)));
+            this.own(dojoOn(this._inputNode, "change", lang.hitch(this, this._onChange)));
         },
 
         _onFocus: function () {
@@ -70,13 +74,30 @@ define([
             dojoAttr.set(this._inputNode, "type", "text");
         },
 
+        _onChange: function (e) {
+            logger.debug(this.id + "._onChange");
+        },
+
         _addElements: function () {
             logger.debug(this.id + "._addElements");
+
+            var rootNode = this.domNode;
+            if (this.showLabel) {
+                rootNode = $("div", {
+                    class: "form-group"
+                }, this.domNode);
+
+                $("label", {
+                    class: "control-label",
+                    innerHTML: this.labelText
+                }, rootNode);
+            }
+
             if (this.showButton) {
                 this._calendarButton = $("button", {
                     type: "button",
                     class: "btn mx-button mx-dateinput-select-button pickaDay-button"
-                }, this.domNode);
+                }, rootNode);
 
                 $("span", {
                     class: "glyphicon glyphicon-" + this.buttonClass
@@ -85,7 +106,7 @@ define([
 
             var wrapper = $("div", {
                 class: "mx-dateinput-input-wrapper"
-            }, this.domNode);
+            }, rootNode);
 
             this._inputNode = $("input", {
                 type: "text",
@@ -95,7 +116,7 @@ define([
 
             var pickerWrapper = $("div", {
                 class: "pickerCalendar"
-            }, this.domNode);
+            }, rootNode);
 
             if (!this._readOnly) {
                 this._picker = new PickADay({
@@ -119,6 +140,9 @@ define([
 
             if (date) {
                 this._contextObj.set(this.dateAttr, date);
+                if (this.onChangeMF) {
+                    this._execMf(this.onChangeMF, this._contextObj.getGuid());
+                }
             }
         },
 
@@ -241,6 +265,26 @@ define([
 
             this._clearValidations();
             this._executeCallback(callback, "_updateRendering");
+        },
+
+        _execMf: function (mf, guid, cb) {
+            logger.debug(this.id + "._execMf");
+            if (mf && guid) {
+                mx.ui.action(mf, {
+                    params: {
+                        applyto: "selection",
+                        guids: [guid]
+                    },
+                    callback: lang.hitch(this, function (objs) {
+                        if (cb && typeof cb === "function") {
+                            cb(objs);
+                        }
+                    }),
+                    error: function (error) {
+                        console.debug(error.description);
+                    }
+                }, this);
+            }
         },
 
         _executeCallback: function (cb, from) {
