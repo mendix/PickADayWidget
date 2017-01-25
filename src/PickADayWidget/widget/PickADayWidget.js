@@ -57,7 +57,7 @@ define([
             this.setNative = false;         // TODO: After thorough testing, add this as an option to the modeler
             this.calendarMode = "inline";   // TODO: Add modal option
 
-            dojoClass.add(this.domNode, "mx-dateinput pickaDay-widget", true);
+            dojoClass.add(this.domNode, "mx-dateinput pickaDay-widget form-group", true);
 
             this._addElements();
 
@@ -83,14 +83,14 @@ define([
 
             var rootNode = this.domNode;
             if (this.showLabel) {
-                rootNode = $("div", {
-                    class: "form-group"
-                }, this.domNode);
-
                 $("label", {
                     class: "control-label",
                     innerHTML: this.labelText
-                }, rootNode);
+                }, this.domNode);
+
+                rootNode = $("div", {
+                    class: "form-group"
+                }, this.domNode);
             }
 
             if (this.showButton) {

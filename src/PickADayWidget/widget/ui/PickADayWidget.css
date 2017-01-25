@@ -235,7 +235,7 @@ http://nicolasgallagher.com/micro-clearfix-hack/
 }
 
 .pickaDay-widget .control-label {
-    width: 100%;
+    /*width: 100%;*/
 }
 
 .pickaDay-widget input::-webkit-input-placeholder,
