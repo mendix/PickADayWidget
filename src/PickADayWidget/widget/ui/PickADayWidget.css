@@ -99,6 +99,12 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     *top: 0;
 }
 
+.pika-prev.custom-button,
+.pika-next.custom-button {
+    text-indent: 0;
+    background: none!important;
+}
+
 .pika-prev:hover,
 .pika-next:hover {
     opacity: 1;
@@ -215,6 +221,11 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     opacity: .3;
 }
 
+.is-outside-current-month.clickable:not(.is-disabled) .pika-button {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
 .pika-button:hover {
     color: #fff;
     background: #ff8000;
@@ -256,6 +267,6 @@ http://nicolasgallagher.com/micro-clearfix-hack/
 }
 
 .pickerCalendar {
-    margin-top: 0.5em;
+    margin-top: -0.6em;
     position: relative;
 }

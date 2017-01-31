@@ -37,6 +37,11 @@ define([
         showLabel: false,
         labelText: "",
         onChangeMF: "",
+        clickOutsideMonth: true,
+        disableWeekend: false,
+        triggerFocus: false,
+        prevButtonClass: "minus",
+        nextButtonClass: "plus",
 
         // Internal variables.
         _picker: null,
@@ -116,7 +121,7 @@ define([
 
             var pickerWrapper = $("div", {
                 class: "pickerCalendar"
-            }, rootNode);
+            }, this.domNode);
 
             if (!this._readOnly) {
                 this._picker = new PickADay({
@@ -126,9 +131,17 @@ define([
                     onOpen: lang.hitch(this, this._onOpen),
                     onSelect : lang.hitch(this, this._onSelect),
                     onClose : lang.hitch(this, this._onClose),
+                    triggerFocus: this.triggerFocus,
                     format: this.dateFormat,
                     showDaysInNextAndPreviousMonths: this.showDaysOutsideMonth,
-                    theme: "mendix-pickaday"
+                    clickOutsideMonth: this.clickOutsideMonth,
+                    theme: "mendix-pickaday",
+                    buttonPrev: this.prevButtonClass ? "<div class=\"glyphicon glyphicon-" + this.prevButtonClass + "\"></div>" : null,
+                    buttonNext: this.nextButtonClass ? "<div class=\"glyphicon glyphicon-" + this.nextButtonClass + "\"></div>" : null,
+                    disableWeekends: this.disableWeekend,
+                    disableDayFn: function (day) {
+                        return false;
+                    }
                 });
 
                 this._picker.hide();
@@ -276,6 +289,7 @@ define([
                         guids: [guid]
                     },
                     callback: lang.hitch(this, function (objs) {
+                        logger.debug(this.id + "._execMf cb");
                         if (cb && typeof cb === "function") {
                             cb(objs);
                         }

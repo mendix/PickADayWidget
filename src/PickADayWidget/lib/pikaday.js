@@ -249,7 +249,13 @@
         onSelect: null,
         onOpen: null,
         onClose: null,
-        onDraw: null
+        onDraw: null,
+
+        // Buttons
+        buttonNext: null,
+        buttonPrev: null,
+
+        clickOutsideMonth: false
     },
 
 
@@ -272,6 +278,9 @@
         if (opts.isEmpty) {
             if (opts.showDaysInNextAndPreviousMonths) {
                 arr.push('is-outside-current-month');
+                if (opts.clickOutsideMonth) {
+                    arr.push('clickable');
+                }
             } else {
                 return '<td class="is-empty"></td>';
             }
@@ -383,10 +392,10 @@
         }
 
         if (c === 0) {
-            html += '<button class="pika-prev' + (prev ? '' : ' is-disabled') + '" type="button">' + opts.i18n.previousMonth + '</button>';
+            html += '<button class="pika-prev' + (prev ? '' : ' is-disabled') + (opts.buttonPrev ? ' custom-button' : '') + '" type="button">' + (opts.buttonPrev || opts.i18n.previousMonth) + '</button>';
         }
         if (c === (instance._o.numberOfMonths - 1) ) {
-            html += '<button class="pika-next' + (next ? '' : ' is-disabled') + '" type="button">' + opts.i18n.nextMonth + '</button>';
+            html += '<button class="pika-next' + (next ? '' : ' is-disabled') + (opts.buttonNext ? ' custom-button' : '') + '" type="button">' + (opts.buttonNext || opts.i18n.nextMonth) + '</button>';
         }
 
         return html += '</div>';
@@ -429,10 +438,10 @@
                         }, 100);
                     }
                 }
-                else if (hasClass(target, 'pika-prev')) {
+                else if (hasClass(target, 'pika-prev') || (target.parentElement && hasClass(target.parentElement, 'pika-prev'))) {
                     self.prevMonth();
                 }
-                else if (hasClass(target, 'pika-next')) {
+                else if (hasClass(target, 'pika-next') || (target.parentElement && hasClass(target.parentElement, 'pika-next'))) {
                     self.nextMonth();
                 }
             }
@@ -516,7 +525,7 @@
 
         self._onInputFocus = function()
         {
-            self.show();
+            //self.show();
         };
 
         self._onInputClick = function()
@@ -612,8 +621,10 @@
             this.hide();
             self.el.className += ' is-bound';
             addEvent(opts.trigger, 'click', self._onInputClick);
-            addEvent(opts.trigger, 'focus', self._onInputFocus);
-            addEvent(opts.trigger, 'blur', self._onInputBlur);
+            if (opts.triggerFocus) {
+                addEvent(opts.trigger, 'focus', self._onInputFocus);
+                addEvent(opts.trigger, 'blur', self._onInputBlur);
+            }
         } else {
             this.show();
         }
@@ -1095,7 +1106,8 @@
                         isStartRange: isStartRange,
                         isEndRange: isEndRange,
                         isInRange: isInRange,
-                        showDaysInNextAndPreviousMonths: opts.showDaysInNextAndPreviousMonths
+                        showDaysInNextAndPreviousMonths: opts.showDaysInNextAndPreviousMonths,
+                        clickOutsideMonth: opts.clickOutsideMonth
                     };
 
                 row.push(renderDay(dayConfig));

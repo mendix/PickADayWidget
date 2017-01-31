@@ -59,12 +59,37 @@
                 <translation lang="en_US">Label</translation>
             </translations>
         </property>
+        <property key="prevButtonClass" type="string" required="true" defaultValue="minus">
+            <caption>Prev month button</caption>
+            <category>Appearance</category>
+            <description>Glyphicon button class. The icon has class "glyphicon glyphicon-" and this class Name. If you leave this empty it will use the standard buttons that are defined in the CSS file</description>
+        </property>
+        <property key="nextButtonClass" type="string" required="true" defaultValue="plus">
+            <caption>Next month button</caption>
+            <category>Appearance</category>
+            <description>Glyphicon button class. The icon has class "glyphicon glyphicon-" and this class Name. If you leave this empty it will use the standard buttons that are defined in the CSS file</description>
+        </property>
         <!-- BEHAVIOUR -->
         <property key="onChangeMF" type="microflow" required="false" defaultValue="">
             <caption>On Change Microflow</caption>
             <category>Behavior</category>
             <description>The microflow to execute on when the value is changed.</description>
             <returnType type="Void" />
+        </property>
+        <property key="clickOutsideMonth" type="boolean" defaultValue="true">
+            <caption>Click outside month</caption>
+            <category>Behavior</category>
+            <description>Make dates outside the current month clickable</description>
+        </property>
+        <property key="triggerFocus" type="boolean" defaultValue="false">
+            <caption>Trigger on focus</caption>
+            <category>Behavior</category>
+            <description>Keep this on false if you are using a button. This will prevent unwanted opening of the calendar when the input field gets it's focus. This can be annoying when for example using an on change microflow.</description>
+        </property>
+        <property key="disableWeekend" type="boolean" defaultValue="false">
+            <caption>Disable weekend days</caption>
+            <category>Behavior</category>
+            <description>Disable the selection of weekend days (Saturday and Sunday)</description>
         </property>
     </properties>
 </widget>
