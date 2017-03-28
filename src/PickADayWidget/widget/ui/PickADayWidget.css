@@ -102,7 +102,7 @@ http://nicolasgallagher.com/micro-clearfix-hack/
 .pika-prev.custom-button,
 .pika-next.custom-button {
     text-indent: 0;
-    background: none!important;
+    background: none;
 }
 
 .pika-prev:hover,
