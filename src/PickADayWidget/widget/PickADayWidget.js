@@ -47,6 +47,7 @@ define([
         _picker: null,
         _handles: null,
         _contextObj: null,
+        _stayHidden: false,
 
         constructor: function() {
             this._handles = [];
@@ -131,6 +132,7 @@ define([
                     onOpen: lang.hitch(this, this._onOpen),
                     onSelect : lang.hitch(this, this._onSelect),
                     onClose : lang.hitch(this, this._onClose),
+                    onKey: lang.hitch(this, this._onKey),
                     triggerFocus: this.triggerFocus,
                     format: this.dateFormat,
                     showDaysInNextAndPreviousMonths: this.showDaysOutsideMonth,
@@ -159,6 +161,17 @@ define([
             }
         },
 
+        _onKey: function (e) {
+            // called when key is pressed and picker is visible
+            switch(e.keyCode){
+                case 13:
+                case 27:
+                    e.preventDefault();
+                    this._picker.hide();
+                    break;
+            }
+        },
+
         _onOpen: function () {
             logger.debug(this.id + "._onOpen");
             dojoClass.toggle(this.domNode, "open", true);
@@ -184,7 +197,9 @@ define([
 
         uninitialize: function() {
             logger.debug(this.id + ".uninitialize");
-            this._picker.destroy();
+            if (this._picker) {
+                this._picker.destroy();
+            }
         },
 
         _resetSubscriptions: function () {
@@ -271,7 +286,10 @@ define([
                 dojoStyle.set(this.domNode, "display", "block");
 
                 var date = new Date(this._contextObj.get(this.dateAttr));
-                this._picker.setDate(date, true);
+
+                if (!isNaN(date.getTime())) {
+                    this._picker.setDate(date, true);
+                }
             } else {
                 dojoStyle.set(this.domNode, "display", "none");
             }

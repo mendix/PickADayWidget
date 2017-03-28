@@ -25,6 +25,16 @@ var pkg = require("./package.json"),
     paths = widgetBuilderHelper.generatePaths(pkg),
     xmlversion = widgetBuilderHelper.xmlversion;
 
+function onError(error) {
+   gutil.log(gutil.colors.red('Error: ' + error.message));
+
+   if (error.plugin === 'gulp-jsvalidate') {
+       gutil.log('Error In file: ' + gutil.colors.red(error.fileName));
+   }
+
+   this.emit('end');
+}
+
 gulp.task("default", function() {
     gulp.watch("./src/**/*", ["compress"]);
     gulp.watch("./src/**/*.js", ["copy:js"]);
@@ -47,6 +57,7 @@ gulp.task("compress", ["clean"], function () {
 gulp.task("copy:js", function () {
     return gulp.src(["./src/**/*.js"])
         .pipe(jsValidate())
+        .on("error", onError)
         .pipe(newer(paths.TEST_WIDGETS_DEPLOYMENT_FOLDER))
         .pipe(gulp.dest(paths.TEST_WIDGETS_DEPLOYMENT_FOLDER));
 });

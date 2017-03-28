@@ -2,6 +2,10 @@
  * Pikaday
  *
  * Copyright © 2014 David Bushell | BSD & MIT license | https://github.com/dbushell/Pikaday
+ *
+ * Modifications done: J.W. Lagendijk <jelte.lagendijk@mendix.com>
+ * onKey event listener
+ *
  */
 
 (function (root, factory) {
@@ -250,6 +254,7 @@
         onOpen: null,
         onClose: null,
         onDraw: null,
+        onKey: null,
 
         // Buttons
         buttonNext: null,
@@ -498,6 +503,9 @@
                         self.adjustDate('add', 7);
                         break;
                 }
+                if (typeof self._o.onKey === 'function') {
+                    self._o.onKey.call(this, e);
+                }
             }
         };
 
@@ -530,7 +538,11 @@
 
         self._onInputClick = function()
         {
-            self.show();
+            if (self.switchOnClick && self.isVisible()) {
+                self.hide();
+            } else {
+                self.show();
+            }
         };
 
         self._onInputBlur = function()
@@ -624,6 +636,8 @@
             if (opts.triggerFocus) {
                 addEvent(opts.trigger, 'focus', self._onInputFocus);
                 addEvent(opts.trigger, 'blur', self._onInputBlur);
+            } else {
+                self.switchOnClick = true;
             }
         } else {
             this.show();
